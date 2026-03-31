@@ -1,7 +1,6 @@
 # 🏨 Hotel Management System
 
-A full-featured hotel booking and management system built to handle room reservations, customer records, and billing efficiently.
-
+A JavaFX-based desktop application that simulates real-world hotel operations including booking lifecycle, housekeeping workflow, and customer feedback system.
 ---
 
 
