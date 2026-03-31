@@ -1,0 +1,571 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:id="rootPane"
+            fx:controller="com.hotel.controller.MainController"
+            styleClass="main-root">
+
+    <top>
+        <HBox styleClass="top-bar" alignment="CENTER_LEFT" spacing="14">
+            <padding><Insets top="13" right="22" bottom="13" left="22"/></padding>
+            <Label text="🏨" style="-fx-font-size:20px;"/>
+            <Label text="Fortune Hotel — Management System" styleClass="top-title"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="👤  Khushi" styleClass="top-user"/>
+            <Button text="Logout" styleClass="btn-logout" onAction="#handleLogout"/>
+        </HBox>
+    </top>
+
+    <center>
+        <HBox>
+
+            <VBox styleClass="sidebar">
+
+                <VBox styleClass="sidebar-logo-area" spacing="2">
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label text="🏨" style="-fx-font-size:24px;"/>
+                        <VBox spacing="1">
+                            <Label text="Fortune" styleClass="sidebar-logo-title"/>
+                            <Label text="HOTEL" styleClass="sidebar-logo-sub"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <VBox VBox.vgrow="ALWAYS" style="-fx-padding: 12 0 12 0; -fx-spacing: 2;">
+                    <Label text="MAIN" styleClass="nav-section-label" style="-fx-padding: 10 0 4 20;"/>
+                    <Button fx:id="navDashboard"    text="🏠   Overview"        styleClass="nav-btn, nav-btn-active" onAction="#showDashboard"    maxWidth="Infinity"/>
+                    <Button fx:id="navRooms"        text="🛏   Manage Rooms"    styleClass="nav-btn"                 onAction="#showRooms"        maxWidth="Infinity"/>
+                    <Button fx:id="navAvailability" text="🔍   Availability"    styleClass="nav-btn"                 onAction="#showAvailability" maxWidth="Infinity"/>
+
+                    <Label text="RESERVATIONS" styleClass="nav-section-label" style="-fx-padding: 14 0 4 20;"/>
+                    <Button fx:id="navBooking"      text="📅   New Booking"     styleClass="nav-btn"                 onAction="#showBooking"      maxWidth="Infinity"/>
+                    <Button fx:id="navCancellation" text="🚫   Cancel Booking"  styleClass="nav-btn"                 onAction="#showCancellation" maxWidth="Infinity"/>
+                    <Button fx:id="navCheckout"     text="🔑   Check-Out"       styleClass="nav-btn"                 onAction="#showCheckout"     maxWidth="Infinity"/>
+
+                    <Label text="FINANCE &amp; MORE" styleClass="nav-section-label" style="-fx-padding: 14 0 4 20;"/>
+                    <Button fx:id="navBilling"      text="🧾   Invoices"        styleClass="nav-btn"                 onAction="#showBilling"      maxWidth="Infinity"/>
+                    <Button fx:id="navReviews"      text="💬   Guest Reviews"   styleClass="nav-btn"                 onAction="#showReviews"      maxWidth="Infinity"/>
+                    <Button fx:id="navServices"     text="🛎   Housekeeping"    styleClass="nav-btn"                 onAction="#showServices"     maxWidth="Infinity"/>
+                </VBox>
+
+                <VBox styleClass="sidebar-footer" spacing="10">
+                    <VBox spacing="2">
+                        <Label text="Logged in as" styleClass="sidebar-user"/>
+                        <Label text="Khushi" styleClass="sidebar-username"/>
+                    </VBox>
+                    <Button fx:id="themeBtn" text="☀  Light Mode"
+                            styleClass="theme-toggle-btn"
+                            onAction="#toggleTheme"
+                            maxWidth="Infinity"/>
+                </VBox>
+
+            </VBox>
+
+            <TabPane fx:id="mainTabPane" styleClass="main-tabs"
+                     tabClosingPolicy="UNAVAILABLE"
+                     HBox.hgrow="ALWAYS"
+                     style="-fx-tab-header-area-max-height:0; -fx-tab-min-height:0; -fx-tab-max-height:0;">
+
+                <Tab text="Dashboard">
+                    <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+                        <VBox spacing="22" styleClass="tab-content">
+                            <padding><Insets top="30" right="30" bottom="30" left="30"/></padding>
+
+                            <VBox spacing="3">
+                                <Label text="Good day, Khushi 👋" styleClass="dash-greeting"/>
+                                <Label text="HERE'S WHAT'S HAPPENING AT FORTUNE HOTEL" styleClass="section-subtitle"/>
+                            </VBox>
+
+                            <HBox spacing="14">
+                                <VBox styleClass="mc-default" HBox.hgrow="ALWAYS" spacing="10">
+                                    <padding><Insets top="22" right="22" bottom="22" left="22"/></padding>
+                                    <HBox alignment="CENTER_LEFT" spacing="8">
+                                        <Label text="🛏" styleClass="mc-icon"/>
+                                        <Label text="ROOMS" styleClass="mc-tag"/>
+                                    </HBox>
+                                    <Label fx:id="totalRoomsLabel" text="0" styleClass="mc-num"/>
+                                    <Label text="Total Rooms" styleClass="mc-desc"/>
+                                </VBox>
+                                <VBox styleClass="mc-green" HBox.hgrow="ALWAYS" spacing="10">
+                                    <padding><Insets top="22" right="22" bottom="22" left="22"/></padding>
+                                    <HBox alignment="CENTER_LEFT" spacing="8">
+                                        <Label text="✅" styleClass="mc-icon"/>
+                                        <Label text="AVAILABLE" styleClass="mc-tag"/>
+                                    </HBox>
+                                    <Label fx:id="availableLabel" text="0" styleClass="mc-num-green"/>
+                                    <Label text="Ready to Book" styleClass="mc-desc"/>
+                                </VBox>
+                                <VBox styleClass="mc-amber" HBox.hgrow="ALWAYS" spacing="10">
+                                    <padding><Insets top="22" right="22" bottom="22" left="22"/></padding>
+                                    <HBox alignment="CENTER_LEFT" spacing="8">
+                                        <Label text="🔒" styleClass="mc-icon"/>
+                                        <Label text="OCCUPIED" styleClass="mc-tag"/>
+                                    </HBox>
+                                    <Label fx:id="bookedLabel" text="0" styleClass="mc-num-amber"/>
+                                    <Label text="Currently Booked" styleClass="mc-desc"/>
+                                </VBox>
+                            </HBox>
+
+                            <HBox spacing="14">
+                                <VBox styleClass="mc-gold" HBox.hgrow="ALWAYS" spacing="10">
+                                    <padding><Insets top="22" right="22" bottom="22" left="22"/></padding>
+                                    <HBox alignment="CENTER_LEFT" spacing="8">
+                                        <Label text="💰" styleClass="mc-icon"/>
+                                        <Label text="TOTAL REVENUE" styleClass="mc-tag"/>
+                                    </HBox>
+                                    <Label fx:id="revenueLabel" text="₹0" styleClass="mc-num-gold"/>
+                                    <Label text="All bookings incl. 18% GST" styleClass="mc-desc"/>
+                                </VBox>
+                                <VBox styleClass="mc-default" HBox.hgrow="ALWAYS" spacing="10">
+                                    <padding><Insets top="22" right="22" bottom="22" left="22"/></padding>
+                                    <HBox alignment="CENTER_LEFT" spacing="8">
+                                        <Label text="📅" styleClass="mc-icon"/>
+                                        <Label text="BOOKINGS" styleClass="mc-tag"/>
+                                    </HBox>
+                                    <Label fx:id="totalBookingsLabel" text="0" styleClass="mc-num"/>
+                                    <Label text="Active Reservations" styleClass="mc-desc"/>
+                                </VBox>
+                                <VBox styleClass="mc-blue" HBox.hgrow="ALWAYS" spacing="10">
+                                    <padding><Insets top="22" right="22" bottom="22" left="22"/></padding>
+                                    <HBox alignment="CENTER_LEFT" spacing="8">
+                                        <Label text="🛎" styleClass="mc-icon"/>
+                                        <Label text="PENDING" styleClass="mc-tag"/>
+                                    </HBox>
+                                    <Label fx:id="pendingServicesLabel" text="0" styleClass="mc-num-blue"/>
+                                    <Label text="Service Requests" styleClass="mc-desc"/>
+                                </VBox>
+                            </HBox>
+
+                            <VBox styleClass="info-card" spacing="14">
+                                <padding><Insets top="22" right="22" bottom="22" left="22"/></padding>
+                                <Label text="🏷  ROOM TARIFF" styleClass="card-heading-lg"/>
+                                <HBox spacing="14">
+                                    <VBox styleClass="tariff-std" HBox.hgrow="ALWAYS" alignment="CENTER_LEFT" spacing="6">
+                                        <padding><Insets top="16" right="18" bottom="16" left="18"/></padding>
+                                        <HBox spacing="8" alignment="CENTER_LEFT">
+                                            <Label text="🛏" style="-fx-font-size:16px;"/>
+                                            <Label text="Standard" styleClass="tariff-name"/>
+                                        </HBox>
+                                        <Label text="₹2,000 / night" styleClass="tariff-price"/>
+                                    </VBox>
+                                    <VBox styleClass="tariff-dlx" HBox.hgrow="ALWAYS" alignment="CENTER_LEFT" spacing="6">
+                                        <padding><Insets top="16" right="18" bottom="16" left="18"/></padding>
+                                        <HBox spacing="8" alignment="CENTER_LEFT">
+                                            <Label text="🌟" style="-fx-font-size:16px;"/>
+                                            <Label text="Deluxe" styleClass="tariff-name"/>
+                                        </HBox>
+                                        <Label text="₹4,000 / night" styleClass="tariff-price"/>
+                                    </VBox>
+                                    <VBox styleClass="tariff-lux" HBox.hgrow="ALWAYS" alignment="CENTER_LEFT" spacing="6">
+                                        <padding><Insets top="16" right="18" bottom="16" left="18"/></padding>
+                                        <HBox spacing="8" alignment="CENTER_LEFT">
+                                            <Label text="👑" style="-fx-font-size:16px;"/>
+                                            <Label text="Luxury" styleClass="tariff-name-lux"/>
+                                        </HBox>
+                                        <Label text="₹7,000 / night" styleClass="tariff-price-lux"/>
+                                    </VBox>
+                                </HBox>
+                                <Label text="* GST @ 18% applied on all bookings" styleClass="hint-label"/>
+                            </VBox>
+
+                        </VBox>
+                    </ScrollPane>
+                </Tab>
+
+                <Tab text="Rooms">
+                    <VBox spacing="16" styleClass="tab-content">
+                        <padding><Insets top="28" right="28" bottom="28" left="28"/></padding>
+                        <VBox spacing="4">
+                            <Label text="Room Management" styleClass="section-title"/>
+                            <Label text="ADD &amp; VIEW ALL ROOMS" styleClass="section-subtitle"/>
+                        </VBox>
+                        <HBox spacing="12" alignment="CENTER_LEFT" styleClass="action-bar">
+                            <padding><Insets top="12" right="16" bottom="12" left="16"/></padding>
+                            <Label text="Room Type:" styleClass="field-label"/>
+                            <ComboBox fx:id="roomTypeCombo" prefWidth="160"/>
+                            <Button text="➕  Add Room" onAction="#handleAddRoom" styleClass="btn-primary"/>
+                        </HBox>
+                        <TableView fx:id="roomTable" VBox.vgrow="ALWAYS" styleClass="data-table">
+                            <columns>
+                                <TableColumn fx:id="colRoomNo" text="Room No"   prefWidth="100"/>
+                                <TableColumn fx:id="colType"   text="Type"      prefWidth="130"/>
+                                <TableColumn fx:id="colPrice"  text="Price/Day" prefWidth="140"/>
+                                <TableColumn fx:id="colStatus" text="Status"    prefWidth="160"/>
+                            </columns>
+                            <placeholder><Label text="No rooms added yet. Click '➕ Add Room' to begin." styleClass="table-placeholder"/></placeholder>
+                        </TableView>
+                    </VBox>
+                </Tab>
+
+                <Tab text="Availability">
+                    <VBox spacing="18" styleClass="tab-content">
+                        <padding><Insets top="28" right="28" bottom="28" left="28"/></padding>
+                        <VBox spacing="4">
+                            <Label text="Room Availability" styleClass="section-title"/>
+                            <Label text="CHECK WHICH ROOMS ARE FREE OR OCCUPIED" styleClass="section-subtitle"/>
+                        </VBox>
+
+                        <HBox spacing="12" alignment="CENTER_LEFT" styleClass="action-bar">
+                            <padding><Insets top="12" right="16" bottom="12" left="16"/></padding>
+                            <Label text="Filter:" styleClass="field-label"/>
+                            <ComboBox fx:id="availFilterCombo" prefWidth="180"/>
+                            <Separator orientation="VERTICAL" style="-fx-padding: 0 4 0 4;"/>
+                            <Label text="Search Room / Type:" styleClass="field-label"/>
+                            <TextField fx:id="availSearchField" promptText="e.g. 101, Deluxe..." styleClass="form-field" prefWidth="200"/>
+                            <Button text="🔍  Search" onAction="#handleAvailSearch" styleClass="btn-primary"/>
+                        </HBox>
+
+                        <HBox styleClass="availability-summary" alignment="CENTER_LEFT">
+                            <padding><Insets top="10" right="16" bottom="10" left="16"/></padding>
+                            <Label fx:id="availSummaryLabel" text="Loading..." styleClass="avail-summary-text"/>
+                        </HBox>
+
+                        <TableView fx:id="availTable" VBox.vgrow="ALWAYS" styleClass="data-table">
+                            <columns>
+                                <TableColumn fx:id="colAvailNo"     text="Room No"   prefWidth="100"/>
+                                <TableColumn fx:id="colAvailType"   text="Type"      prefWidth="140"/>
+                                <TableColumn fx:id="colAvailPrice"  text="Rate"      prefWidth="160"/>
+                                <TableColumn fx:id="colAvailStatus" text="Status"    prefWidth="160"/>
+                            </columns>
+                            <placeholder><Label text="No rooms match the current filter." styleClass="table-placeholder"/></placeholder>
+                        </TableView>
+                    </VBox>
+                </Tab>
+
+                <Tab text="Book Room">
+                    <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+                        <VBox spacing="24" styleClass="tab-content">
+                            <padding><Insets top="28" right="28" bottom="28" left="28"/></padding>
+                            <VBox spacing="4">
+                                <Label text="New Booking" styleClass="section-title"/>
+                                <Label text="RESERVE A ROOM FOR A GUEST" styleClass="section-subtitle"/>
+                            </VBox>
+                            <VBox styleClass="form-card" spacing="18">
+                                <padding><Insets top="26" right="28" bottom="26" left="28"/></padding>
+                                <Label text="CUSTOMER DETAILS" styleClass="card-heading"/>
+                                <HBox spacing="16">
+                                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                        <Label text="Customer Name" styleClass="field-label"/>
+                                        <TextField fx:id="nameField" promptText="Full name" styleClass="form-field" maxWidth="Infinity"/>
+                                    </VBox>
+                                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                        <Label text="Phone Number" styleClass="field-label"/>
+                                        <TextField fx:id="phoneField" promptText="10-digit number" styleClass="form-field" maxWidth="Infinity"/>
+                                    </VBox>
+                                </HBox>
+                                <Separator/>
+                                <Label text="BOOKING DETAILS" styleClass="card-heading"/>
+                                <HBox spacing="16">
+                                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                        <Label text="Select Room" styleClass="field-label"/>
+                                        <ComboBox fx:id="roomCombo" maxWidth="Infinity"/>
+                                    </VBox>
+                                    <VBox spacing="6" prefWidth="160">
+                                        <Label text="No. of Nights" styleClass="field-label"/>
+                                        <TextField fx:id="daysField" promptText="e.g. 3" styleClass="form-field" maxWidth="Infinity"/>
+                                    </VBox>
+                                </HBox>
+                                <Button text="✅  Confirm Booking" onAction="#handleBooking" styleClass="btn-primary" maxWidth="Infinity"/>
+                                <Label fx:id="bookingStatusLabel" text="" wrapText="true" styleClass="status-label" visible="false"/>
+                                <Label fx:id="bookingIdLabel" text="" styleClass="booking-id-label" visible="false"/>
+                            </VBox>
+                        </VBox>
+                    </ScrollPane>
+                </Tab>
+
+                <Tab text="Billing">
+                    <HBox styleClass="tab-content" HBox.hgrow="ALWAYS">
+                        <VBox spacing="14" HBox.hgrow="ALWAYS">
+                            <padding><Insets top="28" right="16" bottom="28" left="28"/></padding>
+                            <VBox spacing="4">
+                                <Label text="Billing Records" styleClass="section-title"/>
+                                <Label text="CLICK A ROW TO VIEW RECEIPT · ALL AMOUNTS INCLUDE 18% GST" styleClass="section-subtitle"/>
+                            </VBox>
+                            <TableView fx:id="billTable" VBox.vgrow="ALWAYS" styleClass="data-table">
+                                <columns>
+                                    <TableColumn fx:id="colBillId"       text="Booking ID" prefWidth="100"/>
+                                    <TableColumn fx:id="colBillCustomer" text="Guest"       prefWidth="120"/>
+                                    <TableColumn fx:id="colBillRoom"     text="Room"        prefWidth="140"/>
+                                    <TableColumn fx:id="colBillDays"     text="Nights"      prefWidth="60"/>
+                                    <TableColumn fx:id="colBillDate"     text="Date"        prefWidth="100"/>
+                                    <TableColumn fx:id="colBillSubtotal" text="Subtotal"    prefWidth="100"/>
+                                    <TableColumn fx:id="colBillTax"      text="GST (18%)"   prefWidth="100"/>
+                                    <TableColumn fx:id="colBillTotal"    text="Total"       prefWidth="110"/>
+                                    <TableColumn fx:id="colBillStatus"   text="Status"      prefWidth="100"/>
+                                </columns>
+                                <placeholder><Label text="No billing records yet." styleClass="table-placeholder"/></placeholder>
+                            </TableView>
+                            <HBox alignment="CENTER_RIGHT">
+                                <Label fx:id="billTotalRevenueLabel" text="Total Revenue: ₹0.00" styleClass="bill-total-label"/>
+                            </HBox>
+                        </VBox>
+
+                        <VBox fx:id="receiptPanel" styleClass="receipt-panel" spacing="0" minWidth="280" maxWidth="280" visible="false">
+                            <padding><Insets top="28" right="20" bottom="28" left="20"/></padding>
+
+                            <HBox alignment="CENTER_RIGHT">
+                                <Button text="✕" styleClass="btn-close-receipt" onAction="#handleCloseReceipt"/>
+                            </HBox>
+
+                            <VBox spacing="16" alignment="CENTER" style="-fx-padding: 10 0 20 0;">
+                                <Label text="🏨" style="-fx-font-size:32px;"/>
+                                <Label text="Fortune Hotel" styleClass="rcpt-hotel-name"/>
+                                <Label text="OFFICIAL RECEIPT" styleClass="rcpt-title-label"/>
+                            </VBox>
+
+                            <Separator style="-fx-padding: 0 0 12 0;"/>
+
+                            <VBox spacing="10" style="-fx-padding: 14 0 14 0;">
+                                <HBox spacing="6">
+                                    <Label text="Booking ID" styleClass="rcpt-key" HBox.hgrow="ALWAYS"/>
+                                    <Label fx:id="rcptId" text="—" styleClass="rcpt-val"/>
+                                </HBox>
+                                <HBox spacing="6">
+                                    <Label text="Date" styleClass="rcpt-key" HBox.hgrow="ALWAYS"/>
+                                    <Label fx:id="rcptDate" text="—" styleClass="rcpt-val"/>
+                                </HBox>
+                                <HBox spacing="6">
+                                    <Label text="Status" styleClass="rcpt-key" HBox.hgrow="ALWAYS"/>
+                                    <Label fx:id="rcptStatus" text="—" styleClass="rcpt-val"/>
+                                </HBox>
+                            </VBox>
+
+                            <Separator style="-fx-padding: 0 0 10 0;"/>
+
+                            <VBox spacing="10" style="-fx-padding: 12 0 12 0;">
+                                <Label text="GUEST" styleClass="rcpt-section-label"/>
+                                <HBox spacing="6">
+                                    <Label text="Name" styleClass="rcpt-key" HBox.hgrow="ALWAYS"/>
+                                    <Label fx:id="rcptCustomer" text="—" styleClass="rcpt-val"/>
+                                </HBox>
+                                <HBox spacing="6">
+                                    <Label text="Phone" styleClass="rcpt-key" HBox.hgrow="ALWAYS"/>
+                                    <Label fx:id="rcptPhone" text="—" styleClass="rcpt-val"/>
+                                </HBox>
+                            </VBox>
+
+                            <Separator style="-fx-padding: 0 0 10 0;"/>
+
+                            <VBox spacing="10" style="-fx-padding: 12 0 12 0;">
+                                <Label text="ROOM" styleClass="rcpt-section-label"/>
+                                <HBox spacing="6">
+                                    <Label text="Room No" styleClass="rcpt-key" HBox.hgrow="ALWAYS"/>
+                                    <Label fx:id="rcptRoom" text="—" styleClass="rcpt-val"/>
+                                </HBox>
+                                <HBox spacing="6">
+                                    <Label text="Type" styleClass="rcpt-key" HBox.hgrow="ALWAYS"/>
+                                    <Label fx:id="rcptType" text="—" styleClass="rcpt-val"/>
+                                </HBox>
+                                <HBox spacing="6">
+                                    <Label text="Duration" styleClass="rcpt-key" HBox.hgrow="ALWAYS"/>
+                                    <Label fx:id="rcptDays" text="—" styleClass="rcpt-val"/>
+                                </HBox>
+                                <HBox spacing="6">
+                                    <Label text="Rate" styleClass="rcpt-key" HBox.hgrow="ALWAYS"/>
+                                    <Label fx:id="rcptPrice" text="—" styleClass="rcpt-val"/>
+                                </HBox>
+                            </VBox>
+
+                            <Separator style="-fx-padding: 0 0 10 0;"/>
+
+                            <VBox spacing="10" style="-fx-padding: 12 0 12 0;">
+                                <Label text="CHARGES" styleClass="rcpt-section-label"/>
+                                <HBox spacing="6">
+                                    <Label text="Subtotal" styleClass="rcpt-key" HBox.hgrow="ALWAYS"/>
+                                    <Label fx:id="rcptSubtotal" text="—" styleClass="rcpt-val"/>
+                                </HBox>
+                                <HBox spacing="6">
+                                    <Label text="GST @ 18%" styleClass="rcpt-key" HBox.hgrow="ALWAYS"/>
+                                    <Label fx:id="rcptTax" text="—" styleClass="rcpt-val"/>
+                                </HBox>
+                            </VBox>
+
+                            <VBox styleClass="rcpt-total-box" spacing="4">
+                                <padding><Insets top="14" right="16" bottom="14" left="16"/></padding>
+                                <Label text="TOTAL AMOUNT" styleClass="rcpt-total-label"/>
+                                <Label fx:id="rcptTotal" text="₹0.00" styleClass="rcpt-total-value"/>
+                            </VBox>
+
+                        </VBox>
+                    </HBox>
+                </Tab>
+
+                <Tab text="Checkout">
+                    <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+                        <VBox spacing="24" styleClass="tab-content">
+                            <padding><Insets top="28" right="28" bottom="28" left="28"/></padding>
+                            <VBox spacing="4">
+                                <Label text="Room Checkout" styleClass="section-title"/>
+                                <Label text="FREE UP A ROOM AFTER GUEST DEPARTS" styleClass="section-subtitle"/>
+                            </VBox>
+                            <VBox styleClass="form-card" spacing="18">
+                                <padding><Insets top="24" right="28" bottom="24" left="28"/></padding>
+                                <Label text="SELECT ROOM TO CHECKOUT" styleClass="card-heading"/>
+                                <VBox spacing="6">
+                                    <Label text="Booked Room" styleClass="field-label"/>
+                                    <ComboBox fx:id="checkoutCombo" maxWidth="Infinity"/>
+                                </VBox>
+                                <Button text="🚪  Confirm Checkout" onAction="#handleCheckout" styleClass="btn-danger" maxWidth="Infinity"/>
+                                <Label fx:id="checkoutStatusLabel" text="" wrapText="true" styleClass="status-label" visible="false"/>
+                            </VBox>
+                        </VBox>
+                    </ScrollPane>
+                </Tab>
+
+                <Tab text="Cancel Booking">
+                    <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+                        <VBox spacing="24" styleClass="tab-content">
+                            <padding><Insets top="28" right="28" bottom="28" left="28"/></padding>
+                            <VBox spacing="4">
+                                <Label text="Cancel Booking" styleClass="section-title"/>
+                                <Label text="CANCEL AN EXISTING ACTIVE RESERVATION" styleClass="section-subtitle"/>
+                            </VBox>
+
+                            <VBox styleClass="form-card" spacing="18">
+                                <padding><Insets top="26" right="28" bottom="26" left="28"/></padding>
+                                <Label text="SELECT BOOKING TO CANCEL" styleClass="card-heading"/>
+                                <VBox spacing="6">
+                                    <Label text="Active Booking" styleClass="field-label"/>
+                                    <ComboBox fx:id="cancelCombo" maxWidth="Infinity" onAction="#handleCancelPreview"/>
+                                </VBox>
+
+                                <VBox fx:id="cancelPreviewBox" styleClass="cancel-preview-box" spacing="10" visible="false">
+                                    <padding><Insets top="16" right="18" bottom="16" left="18"/></padding>
+                                    <Label text="📋  BOOKING DETAILS" styleClass="card-heading"/>
+                                    <Label fx:id="cancelPreviewLabel" text="" styleClass="cancel-preview-text" wrapText="true"/>
+                                </VBox>
+
+                                <Button text="🚫  Cancel This Booking" onAction="#handleCancelBooking" styleClass="btn-danger" maxWidth="Infinity"/>
+                                <Label fx:id="cancelStatusLabel" text="" wrapText="true" styleClass="status-label" visible="false"/>
+                            </VBox>
+
+                            <VBox styleClass="info-card" spacing="10">
+                                <padding><Insets top="18" right="20" bottom="18" left="20"/></padding>
+                                <Label text="ℹ  CANCELLATION POLICY" styleClass="card-heading-lg"/>
+                                <Label text="• Cancelled bookings free up the room immediately." styleClass="hint-label" wrapText="true"/>
+                                <Label text="• Cancellation is permanent and cannot be undone." styleClass="hint-label" wrapText="true"/>
+                                <Label text="• Cancelled records remain visible in Invoices for reference." styleClass="hint-label" wrapText="true"/>
+                            </VBox>
+                        </VBox>
+                    </ScrollPane>
+                </Tab>
+
+                <Tab text="Reviews">
+                    <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+                        <VBox spacing="24" styleClass="tab-content">
+                            <padding><Insets top="28" right="28" bottom="28" left="28"/></padding>
+                            <VBox spacing="4">
+                                <Label text="Guest Reviews" styleClass="section-title"/>
+                                <Label text="SHARE YOUR EXPERIENCE" styleClass="section-subtitle"/>
+                            </VBox>
+
+                            <VBox styleClass="form-card" spacing="16">
+                                <padding><Insets top="22" right="26" bottom="22" left="26"/></padding>
+                                <Label text="WRITE A REVIEW" styleClass="card-heading"/>
+                                <HBox spacing="14">
+                                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                        <Label text="Guest Name" styleClass="field-label"/>
+                                        <TextField fx:id="reviewNameField" promptText="Your name" styleClass="form-field" maxWidth="Infinity"/>
+                                    </VBox>
+                                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                        <Label text="Room Type" styleClass="field-label"/>
+                                        <ComboBox fx:id="reviewRoomTypeCombo" maxWidth="Infinity"/>
+                                    </VBox>
+                                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                        <Label text="Rating" styleClass="field-label"/>
+                                        <ComboBox fx:id="reviewRatingCombo" maxWidth="Infinity"/>
+                                    </VBox>
+                                </HBox>
+                                <VBox spacing="6">
+                                    <Label text="Your Review" styleClass="field-label"/>
+                                    <TextArea fx:id="reviewTextField" promptText="Tell us about your stay..." styleClass="form-field review-area" prefRowCount="4" maxWidth="Infinity" wrapText="true"/>
+                                </VBox>
+                                <Button text="⭐  Submit Review" onAction="#handleSubmitReview" styleClass="btn-primary" maxWidth="Infinity"/>
+                                <Label fx:id="reviewStatusLabel" text="" wrapText="true" styleClass="status-label" visible="false"/>
+                            </VBox>
+
+                            <VBox styleClass="info-card" spacing="12">
+                                <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                                <Label text="RECENT REVIEWS" styleClass="card-heading"/>
+                                <VBox fx:id="reviewsContainer" spacing="12"/>
+                                <Label fx:id="noReviewsLabel" text="No reviews yet. Be the first to review!" styleClass="hint-label"/>
+                            </VBox>
+                        </VBox>
+                    </ScrollPane>
+                </Tab>
+
+                <Tab text="Services">
+                    <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+                        <VBox spacing="22" styleClass="tab-content">
+                            <padding><Insets top="28" right="28" bottom="28" left="28"/></padding>
+
+                            <VBox spacing="4">
+                                <Label text="Hotel Services" styleClass="section-title"/>
+                                <Label text="REQUEST &amp; TRACK GUEST SERVICES" styleClass="section-subtitle"/>
+                            </VBox>
+
+                            <VBox styleClass="form-card" spacing="16">
+                                <padding><Insets top="22" right="24" bottom="22" left="24"/></padding>
+                                <Label text="NEW SERVICE REQUEST" styleClass="card-heading"/>
+                                <HBox spacing="14">
+                                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                        <Label text="Room Number" styleClass="field-label"/>
+                                        <ComboBox fx:id="serviceRoomCombo" maxWidth="Infinity"/>
+                                    </VBox>
+                                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                        <Label text="Service Type" styleClass="field-label"/>
+                                        <ComboBox fx:id="serviceTypeCombo" maxWidth="Infinity"/>
+                                    </VBox>
+                                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                        <Label text="Priority" styleClass="field-label"/>
+                                        <ComboBox fx:id="servicePriorityCombo" maxWidth="Infinity"/>
+                                    </VBox>
+                                </HBox>
+                                <VBox spacing="6">
+                                    <Label text="Additional Notes (optional)" styleClass="field-label"/>
+                                    <TextField fx:id="serviceNotesField" promptText="e.g. Extra pillows needed, prefer afternoon slot..." styleClass="form-field" maxWidth="Infinity"/>
+                                </VBox>
+                                <Button text="🛎  Submit Service Request" onAction="#handleServiceRequest" styleClass="btn-primary" maxWidth="Infinity"/>
+                                <Label fx:id="serviceStatusLabel" text="" wrapText="true" styleClass="status-label" visible="false"/>
+                            </VBox>
+
+                            <HBox spacing="14">
+                                <VBox styleClass="stat-card" alignment="CENTER_LEFT" spacing="6" HBox.hgrow="ALWAYS">
+                                    <padding><Insets top="16" right="18" bottom="16" left="18"/></padding>
+                                    <Label text="⏳" styleClass="stat-icon"/>
+                                    <Label fx:id="svcPendingCount"  text="0" styleClass="stat-number"/>
+                                    <Label text="Pending"           styleClass="stat-label"/>
+                                </VBox>
+                                <VBox styleClass="stat-card" alignment="CENTER_LEFT" spacing="6" HBox.hgrow="ALWAYS">
+                                    <padding><Insets top="16" right="18" bottom="16" left="18"/></padding>
+                                    <Label text="🔄" styleClass="stat-icon"/>
+                                    <Label fx:id="svcProgressCount" text="0" styleClass="stat-number"/>
+                                    <Label text="In Progress"       styleClass="stat-label"/>
+                                </VBox>
+                                <VBox styleClass="stat-card stat-gold" alignment="CENTER_LEFT" spacing="6" HBox.hgrow="ALWAYS">
+                                    <padding><Insets top="16" right="18" bottom="16" left="18"/></padding>
+                                    <Label text="✅" styleClass="stat-icon"/>
+                                    <Label fx:id="svcDoneCount"     text="0" styleClass="stat-number-sm"/>
+                                    <Label text="Completed"         styleClass="stat-label"/>
+                                </VBox>
+                            </HBox>
+
+                            <VBox styleClass="info-card" spacing="14">
+                                <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                                <Label text="ACTIVE SERVICE REQUESTS" styleClass="card-heading"/>
+                                <VBox fx:id="serviceRequestsContainer" spacing="10"/>
+                                <Label fx:id="noServicesLabel" text="No service requests yet." styleClass="hint-label"/>
+                            </VBox>
+
+                        </VBox>
+                    </ScrollPane>
+                </Tab>
+
+            </TabPane>
+        </HBox>
+    </center>
+
+</BorderPane>

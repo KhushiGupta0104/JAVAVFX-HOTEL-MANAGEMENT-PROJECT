@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.hotel.controller.LoginController"
+      styleClass="login-root"
+      alignment="CENTER"
+      spacing="0">
+
+    <!-- Header Banner -->
+    <VBox styleClass="login-header" alignment="CENTER" spacing="6">
+        <Label text="🏨" styleClass="login-icon"/>
+        <Label text="FORTUNE HOTEL" styleClass="login-title"/>
+        <Label text="Management System" styleClass="login-subtitle"/>
+    </VBox>
+
+    <!-- Card -->
+    <VBox styleClass="login-card" alignment="CENTER" spacing="16">
+        <padding><Insets top="30" right="40" bottom="30" left="40"/></padding>
+
+        <Label text="Staff Login" styleClass="login-card-title"/>
+
+        <VBox spacing="6" maxWidth="320">
+            <Label text="Username" styleClass="field-label"/>
+            <TextField fx:id="usernameField" promptText="Enter username"
+                       styleClass="login-field"/>
+        </VBox>
+
+        <VBox spacing="6" maxWidth="320">
+            <Label text="Password" styleClass="field-label"/>
+            <PasswordField fx:id="passwordField" promptText="Enter password"
+                           styleClass="login-field"/>
+        </VBox>
+
+        <Label fx:id="errorLabel" text="" styleClass="error-label" visible="false"/>
+
+        <Button text="LOGIN" onAction="#handleLogin"
+                styleClass="login-btn" maxWidth="320"/>
+
+    </VBox>
+
+</VBox>
